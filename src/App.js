@@ -1,23 +1,41 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import {BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+
+import ListCustomers from './components/ListCustomers';
+import ListTrainings from './components/ListTrainings';
+
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import './App.css';
 
 function App() {
-  return (
+  
+return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6">
+                Personal Trainer
+              </Typography>
+            </Toolbar>
+          </AppBar>
+
+      <Router>
+        <div>
+          <Link to="/customers">Customers</Link>{' '}
+          <Link to="/trainings">Trainings</Link>{' '}
+          <Switch>
+            <Route path="/customers" component={ListCustomers} />
+            <Route path="/trainings" component={ListTrainings} />
+            <Route render={() => <h1>Page not found</h1>} />
+          </Switch>
+        </div>
+      </Router>
+
     </div>
   );
 }
