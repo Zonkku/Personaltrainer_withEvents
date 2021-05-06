@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-
 
 
 function ListCustomers() {
 
     const [customers, setCustomers] = useState([]);
-
 
     useEffect(() => {
       fetchCustomers();
@@ -33,10 +26,7 @@ function ListCustomers() {
       { headerName: "Address", field: "streetaddress", sortable: true, filter: true },
       { field: "postcode", sortable: true, filter: true },
       { field: "city", sortable: true, filter: true }
-      
     ]
-  
-
 
     return (
       <div>
@@ -48,13 +38,9 @@ function ListCustomers() {
           pagination={true}
           paginationPageSize={8}
           suppressCellSelecttion={true}
-
         /></div>
       </div>
-
-
     );
-    
 }
 
 export default ListCustomers;

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 
 
 function ListTrainings() {
 
     const [trainings, setTrainings] = useState([]);
-
 
     useEffect(() => {
       fetchTrainings();
@@ -27,11 +24,11 @@ function ListTrainings() {
           field: "date", 
           sortable: true, 
           filter: true,
-          valueFormatter : params => moment().format(params.value) 
+          valueFormatter : params => moment(params.value).format("MMMM Do YYYY, h:mm") 
         },
         { field: "duration", sortable: true, filter: true },
-        { headerName: "Customer", field: "customer.lastname",  sortable: true, filter: true}
-  
+        { headerName: "Customer", field: "customer.lastname",  sortable: true, filter: true},
+        { headerName: "", field: "customer.firstname",  sortable: true, filter: true}
     ]
 
     return (
@@ -44,13 +41,10 @@ function ListTrainings() {
           pagination={true}
           paginationPageSize={8}
           suppressCellSelecttion={true}
-
+          
         /></div>
       </div>
-
-
-    );
-    
+    );   
 }
 
 export default ListTrainings;
