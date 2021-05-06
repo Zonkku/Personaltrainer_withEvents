@@ -22,15 +22,14 @@ function ListTrainings() {
     ]
   
     const columns = [
-        { 
+      { field: "activity", sortable: true, filter: true },
+      { 
           field: "date", 
           sortable: true, 
           filter: true,
           valueFormatter : params => moment().format(params.value) 
-
         },
         { field: "duration", sortable: true, filter: true },
-        { field: "activity", sortable: true, filter: true },
         { headerName: "Customer", field: "customer.lastname",  sortable: true, filter: true}
   
     ]
@@ -38,6 +37,7 @@ function ListTrainings() {
     return (
       <div>
         <div className="ag-theme-material" style={{ height: 600, width: '90%', margin: 'auto' }}>
+        <h1>Trainings</h1>
         <AgGridReact
           rowData={trainings}
           columnDefs={columns}
