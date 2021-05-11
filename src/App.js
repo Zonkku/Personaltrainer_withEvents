@@ -7,6 +7,7 @@ import {BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ListCustomers from './components/ListCustomers';
 import ListTrainings from './components/ListTrainings';
 
+
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import './App.css';
