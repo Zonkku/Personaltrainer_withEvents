@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import moment from 'moment';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function ListTrainings() {
@@ -17,6 +19,21 @@ function ListTrainings() {
       .then(data => setTrainings(data))
       .catch(err => console.err(err))
     ]
+
+    const deleteTraining = (id) => {
+      if (window.confirm('Are you sure?')) {
+        fetch('https://customerrest.herokuapp.com/api/trainings' + id, {method: 'DELETE'})
+        .then(response => {
+          if(response.ok) {
+            fetchTrainings();
+          }
+          else {
+            alert('Something went wrong');
+          }
+        })
+        .catch(err => console.error(err))
+      }
+    }
   
     const columns = [
       { field: "activity", sortable: true, filter: true },
@@ -28,7 +45,15 @@ function ListTrainings() {
         },
         { field: "duration", sortable: true, filter: true },
         { headerName: "Customer", field: "customer.lastname",  sortable: true, filter: true},
-        { headerName: "", field: "customer.firstname",  sortable: true, filter: true}
+        { headerName: "", field: "customer.firstname",  sortable: true, filter: true},
+        { headerName: '',
+        field:"id",
+        width: 100,
+        cellRendererFramework: params => 
+        <IconButton color="secondary" onClick={() => deleteTraining(params.value)}>
+          <DeleteIcon /> 
+        </IconButton> 
+      }
     ]
 
     return (

@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import EditCustomer from './subcomponents/EditCustomer';
 import AddCustomer from './subcomponents/AddCustomer';
 import Snackbar from '@material-ui/core/Snackbar';
 
@@ -11,6 +11,7 @@ function ListCustomers() {
 
     const [customers, setCustomers] = useState([]);
     const [open, setOpen] = useState(false);
+    const [msg, setMsg] = useState('');
 
     const openSnackbar = () => {
       setOpen(true);
@@ -37,6 +38,7 @@ function ListCustomers() {
         fetch(url, {method: 'DELETE'})
         .then(response => {
           if(response.ok) {
+            setMsg('Customer deleted');
             openSnackbar();
             fetchCustomers();
           }
@@ -63,6 +65,21 @@ function ListCustomers() {
       .catch(err => console.error(err))
     }
     
+    const editCustomer = (url, updatedCustomer) => {
+      fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify(updatedCustomer),
+        headers: { 'Content-type' : 'application/json'}
+      })
+      .then(response => {
+        if(response.ok)
+          fetchCustomers();
+        else
+          alert('Something went wrong');
+      })
+    .catch(err => console.error(err))
+    }
+  
   
     const columns = [
       { headerName: "First name", field: "firstname", sortable: true, filter: true },
@@ -72,6 +89,12 @@ function ListCustomers() {
       { headerName: "Address", field: "streetaddress", sortable: true, filter: true },
       { field: "postcode", sortable: true, filter: true },
       { field: "city", sortable: true, filter: true },
+      { headerName: '',
+        field:'links.href',
+        width: 100,
+        cellRendererFramework: params => 
+        <EditCustomer link={params.value} customer={params.data} editCustomer={editCustomer}/> 
+      },
       { headerName: '',
         field:'links.href',
         width: 100,
@@ -97,7 +120,7 @@ function ListCustomers() {
         /></div>
         <Snackbar
           open={open}
-          message="Customer deleted"
+          message={msg}
           autoHideDuration={3000}
           onClose={closeSnackbar}
         />
