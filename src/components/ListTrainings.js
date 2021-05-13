@@ -3,11 +3,23 @@ import { AgGridReact } from 'ag-grid-react';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Snackbar from '@material-ui/core/Snackbar';
+
 
 
 function ListTrainings() {
 
     const [trainings, setTrainings] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [msg, setMsg] = useState('');
+
+    const openSnackbar = () => {
+      setOpen(true);
+    }
+  
+    const closeSnackbar = () => {
+      setOpen(false);
+    }
 
     useEffect(() => {
       fetchTrainings();
@@ -22,9 +34,11 @@ function ListTrainings() {
 
     const deleteTraining = (id) => {
       if (window.confirm('Are you sure?')) {
-        fetch('https://customerrest.herokuapp.com/api/trainings' + id, {method: 'DELETE'})
+        fetch('https://customerrest.herokuapp.com/api/trainings/' + id, {method: 'DELETE'})
         .then(response => {
           if(response.ok) {
+            setMsg('Training deleted');
+            openSnackbar();
             fetchTrainings();
           }
           else {
@@ -36,24 +50,24 @@ function ListTrainings() {
     }
   
     const columns = [
-      { field: "activity", sortable: true, filter: true },
-      { 
-          field: "date", 
-          sortable: true, 
-          filter: true,
-          valueFormatter : params => moment(params.value).format("MMMM Do YYYY, h:mm") 
-        },
-        { field: "duration", sortable: true, filter: true },
-        { headerName: "Customer", field: "customer.lastname",  sortable: true, filter: true},
-        { headerName: "", field: "customer.firstname",  sortable: true, filter: true},
-        { headerName: '',
+      { headerName: '',
         field:"id",
         width: 100,
         cellRendererFramework: params => 
         <IconButton color="secondary" onClick={() => deleteTraining(params.value)}>
           <DeleteIcon /> 
         </IconButton> 
-      }
+      },
+      { field: "activity", sortable: true, filter: true },
+      { 
+        field: "date", 
+        sortable: true, 
+        filter: true,
+        valueFormatter : params => moment(params.value).format("MMMM Do YYYY, h:mm") 
+      },
+      { field: "duration", sortable: true, filter: true },
+      { headerName: "Customer", field: "customer.lastname",  sortable: true, filter: true},
+      { headerName: "", field: "customer.firstname",  sortable: true, filter: true}
     ]
 
     return (
@@ -68,6 +82,12 @@ function ListTrainings() {
           suppressCellSelecttion={true}
           
         /></div>
+        <Snackbar
+          open={open}
+          message={msg}
+          autoHideDuration={3000}
+          onClose={closeSnackbar}
+        />
       </div>
     );   
 }

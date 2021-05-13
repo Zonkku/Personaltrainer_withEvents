@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Snackbar from '@material-ui/core/Snackbar';
+
 import EditCustomer from './subcomponents/EditCustomer';
 import AddCustomer from './subcomponents/AddCustomer';
-import Snackbar from '@material-ui/core/Snackbar';
+import AddTraining from './subcomponents/AddTraining';
 
 function ListCustomers() {
 
@@ -35,6 +36,7 @@ function ListCustomers() {
 
     const deleteCustomer = (url) => {
       if (window.confirm('Are you sure?')) {
+        console.log(url);
         fetch(url, {method: 'DELETE'})
         .then(response => {
           if(response.ok) {
@@ -57,8 +59,11 @@ function ListCustomers() {
         headers: { 'Content-type' : 'application/json' }
       })
       .then(response => {
-        if(response.ok)
+        if(response.ok) {
+          setMsg('Customer added');
+          openSnackbar();
           fetchCustomers();
+        }
         else
           alert('Something went wrong');
       })
@@ -66,44 +71,71 @@ function ListCustomers() {
     }
     
     const editCustomer = (url, updatedCustomer) => {
+      console.log(url);
       fetch(url, {
         method: 'PUT',
         body: JSON.stringify(updatedCustomer),
         headers: { 'Content-type' : 'application/json'}
       })
       .then(response => {
-        if(response.ok)
+        if(response.ok) {
+          setMsg('Customer updated');
+          openSnackbar();
           fetchCustomers();
+        }
         else
           alert('Something went wrong');
       })
     .catch(err => console.error(err))
     }
-  
+    
+    const addTraining = (newTraining) => {
+      console.log("Moi");
+      fetch('https://customerrest.herokuapp.com/api/trainings', {
+        method: 'POST',
+        body: JSON.stringify(newTraining),
+        headers: { 'Content-type' : 'application/json' }
+      })
+      .then(response => {
+        if(response.ok) {
+          setMsg('Training added');
+          openSnackbar();
+          fetchCustomers();
+        }
+        else
+          alert('Something went wrong');
+      })
+      .catch(err => console.error(err))
+    }
   
     const columns = [
+      { headerName: '',
+        field:'links.0.href',
+        width: 100,
+        cellRendererFramework: params => 
+        <IconButton color="secondary" onClick={() => deleteCustomer(params.value)}>
+          <DeleteIcon /> 
+        </IconButton> 
+      },
+      { headerName: '',
+        field:'links.0.href',
+        width: 100,
+        cellRendererFramework: params => 
+        <EditCustomer link={params.value} customer={params.data} editCustomer={editCustomer}/> 
+      }, 
+      { headerName: '',
+        field:'links.0.href',
+        width: 200,
+        cellRendererFramework: params => 
+        <AddTraining customerLink={params.value} addTraining={addTraining}/>
+      },
       { headerName: "First name", field: "firstname", sortable: true, filter: true },
       { headerName: "Last name", field: "lastname", sortable: true, filter: true },
       { field: "email", sortable: true, filter: true },
       { field: "phone", sortable: true, filter: true },
       { headerName: "Address", field: "streetaddress", sortable: true, filter: true },
       { field: "postcode", sortable: true, filter: true },
-      { field: "city", sortable: true, filter: true },
-      { headerName: '',
-        field:'links.href',
-        width: 100,
-        cellRendererFramework: params => 
-        <EditCustomer link={params.value} customer={params.data} editCustomer={editCustomer}/> 
-      },
-      { headerName: '',
-        field:'links.href',
-        width: 100,
-        cellRendererFramework: params => 
-        <IconButton color="secondary" onClick={() => deleteCustomer(params.value)}>
-          <DeleteIcon /> 
-        </IconButton> 
-      }
-
+      { field: "city", sortable: true, filter: true }
     ]
 
     return (
