@@ -6,11 +6,12 @@ import {BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import ListCustomers from './components/ListCustomers';
 import ListTrainings from './components/ListTrainings';
+import TrainingCalendar from './components/TrainingCalendar';
 
-
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import './App.css';
+
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+
 
 function App() {
 
@@ -27,9 +28,13 @@ function App() {
           <div>
             <Link to="/customers">Customers</Link>{' '}
             <Link to="/trainings">Trainings</Link>{' '}
+            <Link to="/calendar">Calendar</Link>{' '}
+
             <Switch>
               <Route path="/customers" component={ListCustomers} />
               <Route path="/trainings" component={ListTrainings} />
+              <Route path="/calendar" component={TrainingCalendar} />
+
               <Route render={() => <h1>Page not found</h1>} />
             </Switch>
           </div>

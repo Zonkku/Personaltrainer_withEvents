@@ -8,6 +8,9 @@ import EditCustomer from './subcomponents/EditCustomer';
 import AddCustomer from './subcomponents/AddCustomer';
 import AddTraining from './subcomponents/AddTraining';
 
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
+
 function ListCustomers() {
 
     const [customers, setCustomers] = useState([]);

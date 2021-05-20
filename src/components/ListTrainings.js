@@ -5,6 +5,8 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Snackbar from '@material-ui/core/Snackbar';
 
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
 
 function ListTrainings() {
@@ -78,7 +80,7 @@ function ListTrainings() {
           rowData={trainings}
           columnDefs={columns}
           pagination={true}
-          paginationPageSize={8}
+          paginationPageSize={5}
           suppressCellSelecttion={true}
           
         /></div>
