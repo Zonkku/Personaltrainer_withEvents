@@ -35,26 +35,18 @@ function TrainingCalendar() {
 
     const trainingsToEvents = () => {
 
-              
-            setTrainingEvents([
-                {
-                    id: 16,
-                    title: "Spinning",
-                    allday: true,
-                    start: new Date("2021-05-20T03:34:45.196+00:00"),
-                    end: new Date("2021-05-20T04:34:45.196+00:00")
-
-                }, 
-                {
-                    id: 17,
-                    title: "Spinning",
-                    allday: true,
-                    start: new Date("2021-05-21T03:34:45.141+00:00"),
-                    end: new Date("2021-05-21T04:34:45.141+00:00")
-
-                } 
+        trainingEvents = trainings.map( (training) => 
         
-            ])
+            setTrainingEvent({
+                key: trainings.id,    
+                id: trainings.id,
+                title: trainings.activity,
+                allday: true,
+                start: new Date(trainings.date),
+                end: new Date(trainings.date)
+
+          })
+        )
     }
 
     
