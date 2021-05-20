@@ -9,8 +9,16 @@ function TrainingCalendar() {
 
     const localizer = momentLocalizer(moment);
     const [trainings, setTrainings] = useState([]);
-        
-   
+    const [trainingEvent, setTrainingEvent] = useState({
+        id: 0,
+        title: '',
+        allday: true,
+        start: Date,
+        end: Date
+    });
+
+    const [trainingEvents, setTrainingEvents] = useState([]);
+
     useEffect(() => {
         fetchTrainings();
     }, []);
@@ -20,33 +28,43 @@ function TrainingCalendar() {
         .then(response => response.json())
         .then(data => {
             setTrainings(data)
+            trainingsToEvents()
         })
       .catch(err => console.err(err))
     ]
 
-    const myEventsList = [
-        {
-            id: trainings.id,
-            title: trainings.activity,
-            allDay: true,
-            start: trainings.date,
-            end: trainings.date    
-        }
+    const trainingsToEvents = () => {
 
+              
+            setTrainingEvents([
+                {
+                    id: 16,
+                    title: "Spinning",
+                    allday: true,
+                    start: new Date("2021-05-20T03:34:45.196+00:00"),
+                    end: new Date("2021-05-20T04:34:45.196+00:00")
 
+                }, 
+                {
+                    id: 17,
+                    title: "Spinning",
+                    allday: true,
+                    start: new Date("2021-05-21T03:34:45.141+00:00"),
+                    end: new Date("2021-05-21T04:34:45.141+00:00")
 
+                } 
+        
+            ])
+    }
 
-
-    ]
-
-
+    
 
     return (
         <div>
                 <div>
                     <Calendar
                         localizer={localizer}
-                        events={myEventsList}
+                        events={trainingEvents}
                         startAccessor="start"
                         endAccessor="end"
                         defaultDate={moment().toDate()}
